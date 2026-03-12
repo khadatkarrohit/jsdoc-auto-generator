@@ -1,0 +1,67 @@
+{
+  "name": "jsdoc-auto-generator",
+  "displayName": "JSDoc Auto Generator",
+  "description": "Generate JSDoc comment blocks for any function with one click",
+  "version": "0.1.0",
+  "publisher": "personal",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Formatters"
+  ],
+  "keywords": [
+    "jsdoc",
+    "documentation",
+    "typescript",
+    "javascript",
+    "comments"
+  ],
+  "activationEvents": [
+    "onLanguage:typescript",
+    "onLanguage:javascript",
+    "onLanguage:typescriptreact",
+    "onLanguage:javascriptreact"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "jsdoc-auto-generator.generate",
+        "title": "Generate JSDoc",
+        "category": "JSDoc"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "jsdoc-auto-generator.generate",
+          "when": "editorTextFocus && (editorLangId == typescript || editorLangId == javascript || editorLangId == typescriptreact || editorLangId == javascriptreact)",
+          "group": "1_modification"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "jsdoc-auto-generator.generate",
+        "key": "ctrl+alt+j",
+        "mac": "cmd+alt+j",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "@typescript-eslint/typescript-estree": "^6.18.0"
+  }
+}

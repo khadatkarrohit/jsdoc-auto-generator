@@ -56,11 +56,22 @@ export function activate(context: vscode.ExtensionContext): void {
       }
 
       const functionLine = editor.document.lineAt(functionLineIndex).text;
+
+      // For arrow functions assigned to variables, the actual line with `const foo =`
+      // may precede the function body — walk back to find the actual declaration line
+      let insertLineIndex = functionLineIndex;
+      if (functionLineIndex > 0) {
+        const prevLine = editor.document.lineAt(functionLineIndex - 1).text.trim();
+        if (prevLine.startsWith('export') || prevLine.startsWith('const') || prevLine.startsWith('let') || prevLine.startsWith('var')) {
+          insertLineIndex = functionLineIndex - 1;
+        }
+      }
+
       const indentation = detectIndentation(functionLine);
       const jsDoc = generateJsDoc(funcInfo, indentation);
 
       await editor.edit((editBuilder) => {
-        const insertPosition = new vscode.Position(functionLineIndex, 0);
+        const insertPosition = new vscode.Position(insertLineIndex, 0);
         editBuilder.insert(insertPosition, jsDoc);
       });
     }

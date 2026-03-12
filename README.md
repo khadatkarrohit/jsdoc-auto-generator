@@ -1,4 +1,16 @@
-# jsdoc-auto-generator
+# JSDoc Auto Generator
+
+## Installation
+
+1. Open VS Code
+2. Go to the Extensions view (`Cmd+Shift+X` / `Ctrl+Shift+X`)
+3. Search for **"JSDoc Auto Generator"**
+4. Click **Install**
+
+Or install via CLI:
+```bash
+code --install-extension jsdoc-auto-generator
+```
 
 A VS Code extension that generates JSDoc comment blocks for any TypeScript or JavaScript function with one keystroke or right-click. It reads the function signature at your cursor position and auto-fills parameter names, types, and the return type.
 

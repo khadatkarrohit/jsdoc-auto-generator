@@ -2,8 +2,8 @@
   "name": "jsdoc-auto-generator",
   "displayName": "JSDoc Auto Generator",
   "description": "Generate JSDoc comment blocks for any function with one click",
-  "version": "0.1.0",
-  "publisher": "personal",
+  "version": "0.1.1",
+  "publisher": "rohitkhadatkar18",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -19,6 +19,7 @@
     "comments"
   ],
   "activationEvents": [
+    "onStartupFinished",
     "onLanguage:typescript",
     "onLanguage:javascript",
     "onLanguage:typescriptreact",

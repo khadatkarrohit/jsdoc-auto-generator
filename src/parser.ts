@@ -184,9 +184,21 @@ function findClosestFunction(
     const startLine = (fn.loc?.start.line ?? 1) - 1; // convert to 0-indexed
     const endLine = (fn.loc?.end.line ?? 1) - 1;
 
-    // Cursor is within the function body range or on the function start line
-    if (cursorLine >= startLine && cursorLine <= endLine) {
-      // Look for a more specific nested match first
+    // For single-expression arrow functions (e.g. `const fn = (x) => x * 2`),
+    // body is not a BlockStatement — treat the whole node line as the range
+    const isExpressionArrow =
+      fn.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+      fn.body.type !== AST_NODE_TYPES.BlockStatement;
+
+    const isOnFunctionLine = cursorLine === startLine;
+    const isInsideBody = cursorLine > startLine && cursorLine <= endLine;
+
+    if (!isOnFunctionLine && !isInsideBody && !isExpressionArrow) {
+      // not in this function's range; recurse into children below
+    } else if (isExpressionArrow && !isOnFunctionLine) {
+      // skip
+    } else {
+      // Look for a more specific nested match first (prefer innermost)
       let nested: FunctionInfo | null = null;
       for (const key of Object.keys(fn)) {
         if (key === 'parent') continue;
@@ -206,8 +218,8 @@ function findClosestFunction(
         }
       }
 
-      // If cursor is on or near the function start line, prefer this function
-      if (cursorLine === startLine || cursorLine === startLine + 1) {
+      // If cursor is directly on the function start line, prefer this function over nested
+      if (cursorLine === startLine) {
         return extractFunctionInfo(fn, parent);
       }
 

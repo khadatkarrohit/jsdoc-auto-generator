@@ -68,8 +68,6 @@ function typeAnnotationToString(typeAnnotation: TSESTree.TypeNode | undefined | 
       }
       return 'literal';
     }
-    case AST_NODE_TYPES.TSPromiseType:
-      return 'Promise<unknown>';
     case AST_NODE_TYPES.TSObjectKeyword:
       return 'object';
     case AST_NODE_TYPES.TSFunctionType:
@@ -202,7 +200,7 @@ function findClosestFunction(
       let nested: FunctionInfo | null = null;
       for (const key of Object.keys(fn)) {
         if (key === 'parent') continue;
-        const child = (fn as Record<string, unknown>)[key];
+        const child = (fn as unknown as Record<string, unknown>)[key];
         if (child && typeof child === 'object') {
           if (Array.isArray(child)) {
             for (const item of child) {
@@ -230,7 +228,7 @@ function findClosestFunction(
   // Recurse into children
   for (const key of Object.keys(node)) {
     if (key === 'parent') continue;
-    const child = (node as Record<string, unknown>)[key];
+    const child = (node as unknown as Record<string, unknown>)[key];
     if (child && typeof child === 'object') {
       if (Array.isArray(child)) {
         for (const item of child) {
